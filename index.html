@@ -116,6 +116,10 @@ transition:.3s;
 background:rgba(255,255,255,.06);
 backdrop-filter:blur(10px);
 }
+.card:hover{
+transform:scale(1.05);
+}
+
 .explorar:hover{box-shadow:0 0 25px rgba(0,150,255,.7)}
 .skills:hover{box-shadow:0 0 25px rgba(0,255,120,.7)}
 .conv:hover{box-shadow:0 0 25px rgba(0,0,0,.9)}
@@ -156,12 +160,39 @@ border-radius:5px;
 
 /* FOOTER */
 footer{padding:30px;text-align:center;opacity:.6}
+
+/* 🎉 CONFETE */
+.confetes{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+overflow:hidden;
+}
+
+.confete{
+position:absolute;
+width:8px;
+height:8px;
+opacity:0.9;
+animation:cair linear infinite;
+}
+
+@keyframes cair{
+0%{transform:translateY(-10px) rotate(0deg);}
+100%{transform:translateY(100vh) rotate(360deg);}
+}
 </style>
 </head>
 
 <body class="dark">
 
 <div class="toggle" onclick="toggleMode()"><div class="circle"></div></div>
+
+<!-- 🎉 CONFETE -->
+<div class="confetes"></div>
 
 <!-- INICIO -->
 <div class="section">
@@ -266,9 +297,9 @@ Não temas, porque eu sou contigo; não te assombres, porque eu sou teu Deus.</p
 function skill(tipo){
 let box=document.getElementById("skillBox");
 
-if(tipo==="html") box.innerHTML="<h3>HTML</h3>Base de qualquer site. Estrutura tudo.";
-if(tipo==="css") box.innerHTML="<h3>CSS</h3>Deixa tudo bonito, animações, cores e layout.";
-if(tipo==="js") box.innerHTML="<h3>JavaScript</h3>Faz o site ganhar vida e interatividade.";
+if(tipo==="html") box.innerHTML="<h3>HTML</h3>Base de qualquer site.";
+if(tipo==="css") box.innerHTML="<h3>CSS</h3>Estilização e design.";
+if(tipo==="js") box.innerHTML="<h3>JavaScript</h3>Interatividade.";
 }
 
 /* CONVERSOR */
@@ -303,7 +334,35 @@ g.appendChild(b);
 }
 }
 
+/* 🎉 CONFETE TODO ANO */
+function ativarConfete(){
+let container=document.querySelector(".confetes");
+
+for(let i=0;i<80;i++){
+let c=document.createElement("div");
+c.classList.add("confete");
+
+c.style.left=Math.random()*100+"vw";
+c.style.top="-10px";
+c.style.animationDuration=(Math.random()*3+2)+"s";
+c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+
+container.appendChild(c);
+}
+}
+
+let agora=new Date();
+let ano=agora.getFullYear();
+
+let inicio=new Date(ano,3,6,0,0,0);
+let fim=new Date(ano,3,7,0,0,0);
+
+if(agora>=inicio && agora<fim){
+ativarConfete();
+}
+
 </script>
 
 </body>
 </html>
+<print>God is good</print>
