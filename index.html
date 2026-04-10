@@ -16,23 +16,11 @@ font-family:'Poppins',sans-serif;
 transition:.5s;
 }
 
-/* MODOS */
 body.dark{
 background:linear-gradient(180deg,#000,#050505,#0a0a0a);
 color:#fff;
 }
-body.light{
-background:linear-gradient(180deg,#e0e0e0,#cfcfcf,#bdbdbd);
-color:#111;
-}
 
-/* TITULOS */
-h1,h2{
-font-size:clamp(32px,6vw,60px);
-margin-bottom:20px;
-}
-
-/* TOGGLE */
 .toggle{
 position:fixed;top:20px;right:20px;
 width:65px;height:30px;background:#888;border-radius:50px;cursor:pointer;
@@ -44,61 +32,8 @@ position:absolute;top:2px;left:3px;transition:.3s;
 }
 body.dark .circle{left:36px;background:#000}
 
-/* SECTION */
 .section{padding:100px 20px;text-align:center}
 
-/* TIMELINE */
-.timeline{
-margin:60px auto;
-max-width:1000px;
-position:relative;
-}
-.timeline::before{
-content:"";
-position:absolute;
-top:30px;
-left:5%;
-width:90%;
-height:4px;
-background:linear-gradient(90deg,#00c6ff,#0072ff);
-}
-.points{
-display:flex;
-justify-content:space-between;
-}
-
-/* MOBILE */
-@media (max-width:600px){
-.timeline::before{
-top:0;
-left:50%;
-transform:translateX(-50%);
-width:4px;
-height:100%;
-background:linear-gradient(180deg,#00c6ff,#0072ff);
-}
-.points{
-flex-direction:column;
-align-items:center;
-gap:30px;
-}
-}
-
-/* POINTS */
-.point{
-width:60px;height:60px;border-radius:50%;
-background:rgba(0,198,255,.2);
-display:flex;align-items:center;justify-content:center;
-animation:float 2s infinite alternate;
-}
-.point-text{font-size:13px;margin-top:5px}
-
-@keyframes float{
-from{transform:translateY(0)}
-to{transform:translateY(-10px)}
-}
-
-/* GRID */
 .grid{
 display:flex;
 flex-wrap:wrap;
@@ -106,25 +41,22 @@ justify-content:center;
 gap:20px;
 }
 
-/* CARDS */
 .card{
 padding:20px;
 width:250px;
 border-radius:20px;
 cursor:pointer;
-transition:.3s;
+transition:0.3s;
 background:rgba(255,255,255,.06);
 backdrop-filter:blur(10px);
 }
+
 .card:hover{
-transform:scale(1.05);
+transform:scale(1.12) translateY(-15px);
+box-shadow:0 0 30px #00c6ff, 0 0 80px #0072ff, 0 0 120px #00c6ff;
+filter:brightness(1.3);
 }
 
-.explorar:hover{box-shadow:0 0 25px rgba(0,150,255,.7)}
-.skills:hover{box-shadow:0 0 25px rgba(0,255,120,.7)}
-.conv:hover{box-shadow:0 0 25px rgba(0,0,0,.9)}
-
-/* BOX */
 .box{
 margin-top:30px;
 padding:20px;
@@ -135,33 +67,17 @@ margin-left:auto;
 margin-right:auto;
 }
 
-/* CONVERSOR */
-.conv-area{display:none;margin-top:20px}
-input,select,button{
-width:100%;
+button{
 margin-top:10px;
-padding:10px;border-radius:10px;border:none;
-}
-button{background:#00c6ff;color:#fff}
-
-/* GRAFICO */
-.grafico{
-display:flex;
-gap:3px;
-height:80px;
-margin-top:10px;
-align-items:flex-end;
-}
-.barra{
-width:6px;
+padding:10px;
+border:none;
+border-radius:10px;
 background:#00c6ff;
-border-radius:5px;
+color:#fff;
+cursor:pointer;
 }
 
-/* FOOTER */
-footer{padding:30px;text-align:center;opacity:.6}
-
-/* 🎉 CONFETE */
+/* confete */
 .confetes{
 position:fixed;
 top:0;
@@ -169,147 +85,95 @@ left:0;
 width:100%;
 height:100%;
 pointer-events:none;
-overflow:hidden;
 }
 
 .confete{
 position:absolute;
 width:8px;
 height:8px;
-opacity:0.9;
 animation:cair linear infinite;
 }
 
 @keyframes cair{
-0%{transform:translateY(-10px) rotate(0deg);}
-100%{transform:translateY(100vh) rotate(360deg);}
+0%{transform:translateY(-10px)}
+100%{transform:translateY(100vh)}
 }
+
+footer{padding:30px;text-align:center;opacity:.6}
 </style>
 </head>
 
 <body class="dark">
 
 <div class="toggle" onclick="toggleMode()"><div class="circle"></div></div>
-
-<!-- 🎉 CONFETE -->
 <div class="confetes"></div>
 
-<!-- INICIO -->
 <div class="section">
-<h1>Início</h1>
-
-<p>Guia completo para se tornar um dos melhores programadores do mundo, aprender novas culturas e viver grandes experiências pelo mundo.</p>
-
-<div class="timeline">
-<div class="points">
-<div><div class="point">🏁</div><div class="point-text">Largada</div></div>
-<div><div class="point">🎯</div><div class="point-text">Objetivo</div></div>
-<div><div class="point">📊</div><div class="point-text">Planejar</div></div>
-<div><div class="point">📚</div><div class="point-text">Estudar</div></div>
-<div><div class="point">💻</div><div class="point-text">Programar</div></div>
-<div><div class="point">📈</div><div class="point-text">Progredir</div></div>
-<div><div class="point">🏆</div><div class="point-text">Sucesso</div></div>
-</div>
+<h1>Como se tornar programador e conquistar o mundo 💻🌍</h1>
+<p>2 em cada 10 pessoas escolhem programação... você vai ser uma delas?</p>
 </div>
 
-<div class="box">
-<h2>Por que ser programador?</h2>
-<p>Programação é transformar ideias em algo real através de testes, errando ou acertando, envolve lógica, criatividade e persistência. É dar vida a algo que antes era só um pensamento.</p>
-</div>
-</div>
-
-<!-- EXPLORAR -->
 <div class="section">
-<h2>Explorar</h2>
+<h2>O que aprender</h2>
 
 <div class="grid">
-<div class="card explorar" onclick="explorar('projetos')">Projetos 🚀</div>
-<div class="card explorar" onclick="explorar('skills')">Skills 💻</div>
-<div class="card explorar" onclick="explorar('conteudo')">Conteúdo 📚</div>
-<div class="card explorar" onclick="explorar('fe')">Fé ✝️</div>
-</div>
-
-<div id="explorarBox" class="box"></div>
-</div>
-
-<!-- SKILLS -->
-<div class="section">
-<h2>Skills & habilidades</h2>
-
-<div class="grid">
-<div class="card skills" onclick="skill('html')">HTML</div>
-<div class="card skills" onclick="skill('css')">CSS</div>
-<div class="card skills" onclick="skill('js')">JavaScript</div>
+<div class="card" onclick="skill('html')">HTML</div>
+<div class="card" onclick="skill('css')">CSS</div>
+<div class="card" onclick="skill('js')">JavaScript</div>
 </div>
 
 <div id="skillBox" class="box"></div>
 </div>
 
-<!-- CONVERSOR -->
 <div class="section">
-<h2>Conversor</h2>
+<h2>Programação no Mundo 🌍</h2>
 
-<div class="card conv" onclick="abrirConv()">Abrir Conversor</div>
+<div class="box">
+<p>💻 Programadores são altamente valorizados</p>
+<p>🇺🇸 EUA: até $120.000/ano</p>
+<p>🇨🇦 Canadá: até $90.000/ano</p>
+<p>🇪🇺 Europa: €50.000+/ano</p>
+<p>🌎 Trabalhe de qualquer lugar</p>
+</div>
 
-<div class="conv-area" id="conv">
+<div class="box">
+<h2>Aprenda tudo no meu Ebook 📘</h2>
+
+<a href="#"><button>Hotmart</button></a>
+<a href="#"><button>Kiwify</button></a>
+</div>
+</div>
+
+<div class="section">
+<h2>Conversor 💱</h2>
+
 <input id="valor" placeholder="Valor">
-
 <select id="de"></select>
 <select id="para"></select>
-
 <button onclick="converter()">Converter</button>
 
 <div id="res"></div>
-<div class="grafico" id="grafico"></div>
-</div>
 </div>
 
 <footer>
-Copyright © 2026 Janderf.dev. Todos os direitos reservados
+Copyright © 2026 Janderf.dev
 </footer>
 
 <script>
-
-/* DARK MODE */
 function toggleMode(){
-document.body.classList.toggle("light");
 document.body.classList.toggle("dark");
 }
 
-/* EXPLORAR */
-function explorar(tipo){
-let box=document.getElementById("explorarBox");
-
-if(tipo==="projetos") box.innerHTML="Aqui ficam meus projetos incríveis 🚀";
-if(tipo==="skills") box.innerHTML="Minhas habilidades técnicas 💻";
-if(tipo==="conteudo") box.innerHTML="Tutoriais, aprendizado e evolução 📚";
-if(tipo==="fe") box.innerHTML=`
-<h3>Fé ✝️</h3>
-<p><strong>Jeremias 29:11</strong><br>
-Porque sou eu que conheço os planos que tenho para vocês, diz o Senhor.</p>
-
-<p><strong>Isaías 41:10</strong><br>
-Não temas, porque eu sou contigo; não te assombres, porque eu sou teu Deus.</p>
-`;
-}
-
-/* SKILLS */
 function skill(tipo){
 let box=document.getElementById("skillBox");
 
-if(tipo==="html") box.innerHTML="<h3>HTML</h3>Base de qualquer site.";
-if(tipo==="css") box.innerHTML="<h3>CSS</h3>Estilização e design.";
-if(tipo==="js") box.innerHTML="<h3>JavaScript</h3>Interatividade.";
+if(tipo==="html") box.innerHTML="<h3>HTML</h3>A base de todo site.";
+if(tipo==="css") box.innerHTML="<h3>CSS</h3>Transforme design.";
+if(tipo==="js") box.innerHTML="<h3>JavaScript</h3>Dê vida ao site.";
 }
 
-/* CONVERSOR */
-function abrirConv(){
-let c=document.getElementById("conv");
-c.style.display=c.style.display==="block"?"none":"block";
-}
-
-/* MOEDAS */
-let moedas=["BRL","USD","EUR","GBP","JPY","AUD","CAD"];
+/* moedas */
+let moedas=["BRL","USD","EUR","GBP","JPY","CAD"];
 let de=document.getElementById("de");
 let para=document.getElementById("para");
 
@@ -318,23 +182,20 @@ de.innerHTML+=`<option>${m}</option>`;
 para.innerHTML+=`<option>${m}</option>`;
 });
 
-/* CONVERTER */
-function converter(){
+async function converter(){
 let v=document.getElementById("valor").value;
-document.getElementById("res").innerText="Resultado: "+(v*5).toFixed(2);
+let moedaDe=de.value;
+let moedaPara=para.value;
 
-let g=document.getElementById("grafico");
-g.innerHTML="";
+let res=await fetch(`https://api.exchangerate-api.com/v4/latest/${moedaDe}`);
+let data=await res.json();
 
-for(let i=0;i<20;i++){
-let b=document.createElement("div");
-b.classList.add("barra");
-b.style.height=(Math.random()*80+10)+"px";
-g.appendChild(b);
-}
+let taxa=data.rates[moedaPara];
+
+document.getElementById("res").innerText="Resultado: "+(v*taxa).toFixed(2);
 }
 
-/* 🎉 CONFETE TODO ANO */
+/* confete anual */
 function ativarConfete(){
 let container=document.querySelector(".confetes");
 
@@ -343,7 +204,6 @@ let c=document.createElement("div");
 c.classList.add("confete");
 
 c.style.left=Math.random()*100+"vw";
-c.style.top="-10px";
 c.style.animationDuration=(Math.random()*3+2)+"s";
 c.style.background=`hsl(${Math.random()*360},100%,50%)`;
 
@@ -360,9 +220,7 @@ let fim=new Date(ano,3,7,0,0,0);
 if(agora>=inicio && agora<fim){
 ativarConfete();
 }
-
 </script>
 
 </body>
 </html>
-<print>God is good</print>
