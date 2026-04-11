@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Janderf.dev</title>
-<link rel="icon" href="favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
@@ -13,18 +12,14 @@
 
 body{
 font-family:'Poppins',sans-serif;
-transition:.5s;
-}
-
-body.dark{
 background:linear-gradient(180deg,#000,#050505,#0a0a0a);
 color:#fff;
 }
 
+/* TOGGLE */
 .toggle{
 position:fixed;top:20px;right:20px;
 width:65px;height:30px;background:#888;border-radius:50px;cursor:pointer;
-z-index:999;
 }
 .circle{
 width:26px;height:26px;background:#fff;border-radius:50%;
@@ -32,8 +27,48 @@ position:absolute;top:2px;left:3px;transition:.3s;
 }
 body.dark .circle{left:36px;background:#000}
 
+/* SECTION */
 .section{padding:100px 20px;text-align:center}
 
+/* TITULO */
+h1{
+font-size:clamp(30px,6vw,60px);
+margin-bottom:20px;
+}
+
+/* TIMELINE */
+.timeline{
+margin:60px auto;
+max-width:1000px;
+position:relative;
+}
+.timeline::before{
+content:"";
+position:absolute;
+top:30px;
+left:5%;
+width:90%;
+height:4px;
+background:linear-gradient(90deg,#00c6ff,#0072ff);
+}
+.points{
+display:flex;
+justify-content:space-between;
+}
+.point{
+width:60px;height:60px;border-radius:50%;
+background:rgba(0,198,255,.2);
+display:flex;align-items:center;justify-content:center;
+animation:float 2s infinite alternate;
+}
+.point-text{font-size:13px;margin-top:5px}
+
+@keyframes float{
+from{transform:translateY(0)}
+to{transform:translateY(-10px)}
+}
+
+/* GRID */
 .grid{
 display:flex;
 flex-wrap:wrap;
@@ -41,22 +76,23 @@ justify-content:center;
 gap:20px;
 }
 
+/* CARDS */
 .card{
 padding:20px;
 width:250px;
 border-radius:20px;
 cursor:pointer;
 transition:0.3s;
-background:rgba(255,255,255,.06);
+background:rgba(255,255,255,.05);
 backdrop-filter:blur(10px);
 }
 
 .card:hover{
-transform:scale(1.12) translateY(-15px);
-box-shadow:0 0 30px #00c6ff, 0 0 80px #0072ff, 0 0 120px #00c6ff;
-filter:brightness(1.3);
+transform:scale(1.05) translateY(-5px);
+box-shadow:0 0 20px #00c6ff, 0 0 40px #0072ff;
 }
 
+/* BOX */
 .box{
 margin-top:30px;
 padding:20px;
@@ -67,9 +103,10 @@ margin-left:auto;
 margin-right:auto;
 }
 
+/* BOTÃO */
 button{
 margin-top:10px;
-padding:10px;
+padding:12px;
 border:none;
 border-radius:10px;
 background:#00c6ff;
@@ -77,7 +114,16 @@ color:#fff;
 cursor:pointer;
 }
 
-/* confete */
+/* INPUT */
+input,select{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:10px;
+border:none;
+}
+
+/* CONFETE */
 .confetes{
 position:fixed;
 top:0;
@@ -105,14 +151,33 @@ footer{padding:30px;text-align:center;opacity:.6}
 
 <body class="dark">
 
-<div class="toggle" onclick="toggleMode()"><div class="circle"></div></div>
 <div class="confetes"></div>
 
+<!-- INICIO -->
 <div class="section">
 <h1>Como se tornar programador e conquistar o mundo 💻🌍</h1>
-<p>2 em cada 10 pessoas escolhem programação... você vai ser uma delas?</p>
+
+<div class="timeline">
+<div class="points">
+<div><div class="point">🏁</div><div class="point-text">Largada</div></div>
+<div><div class="point">🎯</div><div class="point-text">Objetivo</div></div>
+<div><div class="point">📊</div><div class="point-text">Planejar</div></div>
+<div><div class="point">📚</div><div class="point-text">Estudar</div></div>
+<div><div class="point">💻</div><div class="point-text">Programar</div></div>
+<div><div class="point">📈</div><div class="point-text">Progredir</div></div>
+<div><div class="point">🏆</div><div class="point-text">Sucesso</div></div>
+</div>
 </div>
 
+<div class="box">
+<h2>Por que ser programador?</h2>
+<p>
+Programação te dá liberdade, dinheiro e a capacidade de construir qualquer coisa.
+</p>
+</div>
+</div>
+
+<!-- SKILLS -->
 <div class="section">
 <h2>O que aprender</h2>
 
@@ -125,25 +190,25 @@ footer{padding:30px;text-align:center;opacity:.6}
 <div id="skillBox" class="box"></div>
 </div>
 
+<!-- DADOS -->
 <div class="section">
 <h2>Programação no Mundo 🌍</h2>
 
 <div class="box">
-<p>💻 Programadores são altamente valorizados</p>
-<p>🇺🇸 EUA: até $120.000/ano</p>
-<p>🇨🇦 Canadá: até $90.000/ano</p>
-<p>🇪🇺 Europa: €50.000+/ano</p>
+<p>🇺🇸 EUA: até $120k/ano</p>
+<p>🇨🇦 Canadá: até $90k/ano</p>
+<p>🇪🇺 Europa: €50k+/ano</p>
 <p>🌎 Trabalhe de qualquer lugar</p>
 </div>
 
 <div class="box">
 <h2>Aprenda tudo no meu Ebook 📘</h2>
-
-<a href="#"><button>Hotmart</button></a>
-<a href="#"><button>Kiwify</button></a>
+<button>Hotmart</button>
+<button>Kiwify</button>
 </div>
 </div>
 
+<!-- CONVERSOR -->
 <div class="section">
 <h2>Conversor 💱</h2>
 
@@ -160,16 +225,13 @@ Copyright © 2026 Janderf.dev
 </footer>
 
 <script>
-function toggleMode(){
-document.body.classList.toggle("dark");
-}
 
 function skill(tipo){
 let box=document.getElementById("skillBox");
 
 if(tipo==="html") box.innerHTML="<h3>HTML</h3>A base de todo site.";
-if(tipo==="css") box.innerHTML="<h3>CSS</h3>Transforme design.";
-if(tipo==="js") box.innerHTML="<h3>JavaScript</h3>Dê vida ao site.";
+if(tipo==="css") box.innerHTML="<h3>CSS</h3>Design profissional.";
+if(tipo==="js") box.innerHTML="<h3>JavaScript</h3>Interatividade total.";
 }
 
 /* moedas */
@@ -195,7 +257,7 @@ let taxa=data.rates[moedaPara];
 document.getElementById("res").innerText="Resultado: "+(v*taxa).toFixed(2);
 }
 
-/* confete anual */
+/* confete */
 function ativarConfete(){
 let container=document.querySelector(".confetes");
 
@@ -214,12 +276,13 @@ container.appendChild(c);
 let agora=new Date();
 let ano=agora.getFullYear();
 
-let inicio=new Date(ano,3,6,0,0,0);
-let fim=new Date(ano,3,7,0,0,0);
+let inicio=new Date(ano,3,6);
+let fim=new Date(ano,3,7);
 
 if(agora>=inicio && agora<fim){
 ativarConfete();
 }
+
 </script>
 
 </body>
