@@ -101,13 +101,27 @@ box-shadow:0 0 15px #00ff88;
 transform:scale(1.05);
 }
 
-/* CONVERSOR */
+/* CARD INFO (VERDE) */
+#info{
+display:none;
+box-shadow:0 0 15px #00ff88;
+border:1px solid rgba(0,255,136,0.3);
+}
+
+/* CONVERSOR BOTÃO */
 .conv-btn{
 max-width:300px;
 margin:40px auto;
 cursor:pointer;
 background:#111;
+border:1px solid rgba(255,255,255,0.1);
 }
+.conv-btn:hover{
+box-shadow:0 0 15px rgba(120,120,120,0.6);
+transform:scale(1.03);
+}
+
+/* CONVERSOR */
 .conv-area{
 display:none;
 margin:20px auto;
@@ -166,7 +180,7 @@ footer{padding:30px;text-align:center;opacity:.6}
 <div class="section">
 <h1>Início</h1>
 
-<p>Guia completo para se tornar um dos melhores progrmadores do mundo, aprender novas culturas e viver grandes experiências pelo mundo</p>
+<p>Guia completo para se tornar um dos melhores programadores do mundo, aprender novas culturas e viver grandes experiências pelo mundo</p>
 
 <div class="timeline">
 <div class="points">
@@ -184,17 +198,16 @@ footer{padding:30px;text-align:center;opacity:.6}
 
 <div class="card">
 <h2>Por que ser programador?</h2>
-<p>Programação é transformar ideias em algo real através de testes, errando ou acertando, envolve lógica, criatividade e persistência. É dar vida a algo que antes era só um pensamento.</p>
-</div>
+<p>Programação é transformar ideias em algo real através de testes, errando ou acertando, envolve lógica, criatividade e persistência.</p>
 </div>
 
 <div class="card">
 <h2>O que é programação?</h2>
-<p>É o processo de escrever, testar e manter instruções (código) que permitem a computadores realizar tarefas específicas, como criar aplicativos, sites, jogos e softwares</p>
+<p>É o processo de criar soluções através de código, que permitem a computadores realizar tarefas específicas, como criar aplicativos, sites, jogos e softwares.</p>
 </div>
 
 <div class="card">
-<h2>Onde a programação domina 🌍</h2>
+<h2>Onde a programação domina</h2>
 <p>EUA 🇺🇸 (Big Tech)<br>Canadá 🇨🇦 (Startups)<br>Europa 🇪🇺 (Tecnologia forte)</p>
 </div>
 
@@ -210,15 +223,10 @@ footer{padding:30px;text-align:center;opacity:.6}
 
 </div>
 
-<div id="info" class="card" style="display:none;"></div>
+<div id="info" class="card"></div>
 
 <!-- CONVERSOR -->
 <div class="card conv-btn" onclick="abrirConv()">Abrir Conversor 💱</div>
-
-#info{
-box-shadow:0 0 15px #00ff88;
-border:1px solid rgba(0,255,136,0.3);
-}
 
 <div class="conv-area" id="conv">
 <input id="valor" placeholder="Valor">
@@ -241,24 +249,16 @@ function mostrar(tipo){
 let box=document.getElementById("info");
 box.style.display="block";
 
-if(tipo==="html") box.innerHTML="<h3>HTML</h3>Estrutura do site.";
-if(tipo==="css") box.innerHTML="<h3>CSS</h3>Estilo e design.";
+if(tipo==="html") box.innerHTML="<h3>HTML</h3>Estrutura de qualquer site.";
+if(tipo==="css") box.innerHTML="<h3>CSS</h3>Estilo e aparência.";
 if(tipo==="js") box.innerHTML="<h3>JavaScript</h3>Interatividade.";
 if(tipo==="python") box.innerHTML="<h3>Python</h3>Lógica e backend.";
 }
 
 /* CONVERSOR */
-.conv-btn{
-max-width:300px;
-margin:40px auto;
-cursor:pointer;
-background:#111;
-border:1px solid rgba(255,255,255,0.1);
-}
-
-.conv-btn:hover{
-box-shadow:0 0 15px rgba(120,120,120,0.6);
-transform:scale(1.03);
+function abrirConv(){
+let c=document.getElementById("conv");
+c.style.display=c.style.display==="block"?"none":"block";
 }
 
 /* MOEDAS */
