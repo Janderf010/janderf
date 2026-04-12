@@ -17,23 +17,12 @@ background:linear-gradient(180deg,#000,#050505,#0a0a0a);
 color:#fff;
 }
 
-/* TOGGLE */
-.toggle{
-position:fixed;top:20px;right:20px;
-width:65px;height:30px;background:#888;border-radius:50px;cursor:pointer;
-}
-.circle{
-width:26px;height:26px;background:#fff;border-radius:50%;
-position:absolute;top:2px;left:3px;transition:.3s;
-}
-body.dark .circle{left:36px;background:#000}
-
 /* SECTION */
 .section{padding:100px 20px;text-align:center}
 
-/* TITULO */
-h1{
-font-size:clamp(30px,6vw,60px);
+/* TITULOS */
+h1,h2{
+font-size:clamp(32px,6vw,60px);
 margin-bottom:20px;
 }
 
@@ -56,6 +45,7 @@ background:linear-gradient(90deg,#00c6ff,#0072ff);
 display:flex;
 justify-content:space-between;
 }
+
 .point{
 width:60px;height:60px;border-radius:50%;
 background:rgba(0,198,255,.2);
@@ -69,7 +59,7 @@ from{transform:translateY(0)}
 to{transform:translateY(-10px)}
 }
 
-/* GRID */
+/* CARDS */
 .grid{
 display:flex;
 flex-wrap:wrap;
@@ -77,34 +67,30 @@ justify-content:center;
 gap:20px;
 }
 
-/* CARDS */
 .card{
 padding:20px;
-width:250px;
+width:280px;
 border-radius:20px;
-cursor:pointer;
-transition:0.3s;
 background:rgba(255,255,255,.05);
-backdrop-filter:blur(10px);
+transition:.3s;
 }
 
 .card:hover{
 transform:scale(1.05) translateY(-5px);
-box-shadow:0 0 20px #00c6ff, 0 0 40px #0072ff;
+box-shadow:0 0 20px #0072ff;
 }
 
 /* BOX */
 .box{
 margin-top:30px;
-padding:20px;
+padding:25px;
 border-radius:20px;
 background:rgba(255,255,255,.05);
 max-width:700px;
-margin-left:auto;
-margin-right:auto;
+margin:auto;
 }
 
-/* BOTÃO */
+/* BOTÕES */
 button{
 margin-top:10px;
 padding:12px;
@@ -115,7 +101,16 @@ color:#fff;
 cursor:pointer;
 }
 
-/* INPUT */
+/* CONVERSOR */
+.conv-area{
+display:none;
+margin:30px auto;
+padding:20px;
+border-radius:20px;
+background:#001a12;
+max-width:400px;
+}
+
 input,select{
 width:100%;
 padding:10px;
@@ -150,13 +145,15 @@ footer{padding:30px;text-align:center;opacity:.6}
 </style>
 </head>
 
-<body class="dark">
+<body>
 
 <div class="confetes"></div>
 
 <!-- INICIO -->
 <div class="section">
-<h1>Como se tornar programador e conquistar o mundo 💻🌍</h1>
+<h1>Início</h1>
+
+<p>Guia completo para se tornar um dos melhores programadores do mundo, aprender novas culturas e viver grandes experiências pelo mundo.</p>
 
 <div class="timeline">
 <div class="points">
@@ -172,38 +169,34 @@ footer{padding:30px;text-align:center;opacity:.6}
 
 <div class="box">
 <h2>Por que ser programador?</h2>
-<p>
-Programação te dá liberdade, dinheiro e a capacidade de construir qualquer coisa.
-</p>
+<p>Programação é transformar ideias em algo real através de testes, errando ou acertando, envolve lógica, criatividade e persistência. É dar vida a algo que antes era só um pensamento.</p>
 </div>
-</div>
-
-<!-- SKILLS -->
-<div class="section">
-<h2>O que aprender</h2>
 
 <div class="grid">
-<div class="card" onclick="skill('html')">HTML</div>
-<div class="card" onclick="skill('css')">CSS</div>
-<div class="card" onclick="skill('js')">JavaScript</div>
+
+<div class="card">
+<h3>O que é Programação?</h3>
+<p>É o processo de escrever, testar e manter instruções (código) que permitem a computadores realizar tarefas específicas, como criar aplicativos, sites, jogos e softwares.</p>
 </div>
 
-<div id="skillBox" class="box"></div>
+<div class="card">
+<h3>Base que você precisa</h3>
+<p>HTML, CSS, JavaScript e Python.</p>
 </div>
 
-<!-- DADOS -->
+<div class="card">
+<h3>Programação no mundo</h3>
+<p>EUA: $120k<br>Canadá: $90k<br>Europa: €50k+</p>
+</div>
+
+</div>
+</div>
+
+<!-- EBOOK -->
 <div class="section">
-<h2>Programação no Mundo 🌍</h2>
-
 <div class="box">
-<p>🇺🇸 EUA: até $120k/ano</p>
-<p>🇨🇦 Canadá: até $90k/ano</p>
-<p>🇪🇺 Europa: €50k+/ano</p>
-<p>🌎 Trabalhe de qualquer lugar</p>
-</div>
-
-<div class="box">
-<h2>Aprenda tudo no meu Ebook 📘</h2>
+<h2>Meu Ebook 📘</h2>
+<p>Aprenda tudo do zero até ganhar dinheiro.</p>
 <button>Hotmart</button>
 <button>Kiwify</button>
 </div>
@@ -211,14 +204,20 @@ Programação te dá liberdade, dinheiro e a capacidade de construir qualquer co
 
 <!-- CONVERSOR -->
 <div class="section">
-<h2>Conversor 💱</h2>
+<h2>Conversor</h2>
 
+<div class="card" onclick="abrirConv()">Abrir Conversor</div>
+
+<div class="conv-area" id="conv">
 <input id="valor" placeholder="Valor">
+
 <select id="de"></select>
 <select id="para"></select>
+
 <button onclick="converter()">Converter</button>
 
 <div id="res"></div>
+</div>
 </div>
 
 <footer>
@@ -227,16 +226,14 @@ Copyright © 2026 Janderf.dev
 
 <script>
 
-function skill(tipo){
-let box=document.getElementById("skillBox");
-
-if(tipo==="html") box.innerHTML="<h3>HTML</h3>A base de todo site.";
-if(tipo==="css") box.innerHTML="<h3>CSS</h3>Design profissional.";
-if(tipo==="js") box.innerHTML="<h3>JavaScript</h3>Interatividade total.";
+/* ABRIR */
+function abrirConv(){
+let c=document.getElementById("conv");
+c.style.display=c.style.display==="block"?"none":"block";
 }
 
-/* moedas */
-let moedas=["BRL","USD","EUR","GBP","JPY","CAD"];
+/* TODAS MOEDAS (simplificado global) */
+let moedas=["USD","BRL","EUR","GBP","JPY","CAD","AUD","CHF","CNY","ARS","MXN"];
 let de=document.getElementById("de");
 let para=document.getElementById("para");
 
@@ -258,7 +255,7 @@ let taxa=data.rates[moedaPara];
 document.getElementById("res").innerText="Resultado: "+(v*taxa).toFixed(2);
 }
 
-/* confete */
+/* CONFETE */
 function ativarConfete(){
 let container=document.querySelector(".confetes");
 
@@ -275,10 +272,8 @@ container.appendChild(c);
 }
 
 let agora=new Date();
-let ano=agora.getFullYear();
-
-let inicio=new Date(ano,3,6);
-let fim=new Date(ano,3,7);
+let inicio=new Date(agora.getFullYear(),3,6);
+let fim=new Date(agora.getFullYear(),3,7);
 
 if(agora>=inicio && agora<fim){
 ativarConfete();
