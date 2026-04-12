@@ -215,6 +215,11 @@ footer{padding:30px;text-align:center;opacity:.6}
 <!-- CONVERSOR -->
 <div class="card conv-btn" onclick="abrirConv()">Abrir Conversor 💱</div>
 
+#info{
+box-shadow:0 0 15px #00ff88;
+border:1px solid rgba(0,255,136,0.3);
+}
+
 <div class="conv-area" id="conv">
 <input id="valor" placeholder="Valor">
 <select id="de"></select>
@@ -226,7 +231,7 @@ footer{padding:30px;text-align:center;opacity:.6}
 </div>
 
 <footer>
-Copyright © 2026 Janderf.dev
+Copyright © 2026 Janderf.dev. Todos os direitos reservados.
 </footer>
 
 <script>
@@ -243,9 +248,17 @@ if(tipo==="python") box.innerHTML="<h3>Python</h3>Lógica e backend.";
 }
 
 /* CONVERSOR */
-function abrirConv(){
-let c=document.getElementById("conv");
-c.style.display=c.style.display==="block"?"none":"block";
+.conv-btn{
+max-width:300px;
+margin:40px auto;
+cursor:pointer;
+background:#111;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.conv-btn:hover{
+box-shadow:0 0 15px rgba(120,120,120,0.6);
+transform:scale(1.03);
 }
 
 /* MOEDAS */
