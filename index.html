@@ -17,10 +17,8 @@ background:linear-gradient(180deg,#000,#050505,#0a0a0a);
 color:#fff;
 }
 
-/* SECTION */
 .section{padding:100px 20px;text-align:center}
 
-/* TITULOS */
 h1,h2{
 font-size:clamp(32px,6vw,60px);
 margin-bottom:20px;
@@ -45,7 +43,6 @@ background:linear-gradient(90deg,#00c6ff,#0072ff);
 display:flex;
 justify-content:space-between;
 }
-
 .point{
 width:60px;height:60px;border-radius:50%;
 background:rgba(0,198,255,.2);
@@ -59,7 +56,7 @@ from{transform:translateY(0)}
 to{transform:translateY(-10px)}
 }
 
-/* CARDS */
+/* CARDS GRANDES */
 .card{
 background:#000;
 padding:25px;
@@ -69,48 +66,55 @@ max-width:700px;
 transition:.3s;
 border:1px solid rgba(255,255,255,0.05);
 }
-
 .card:hover{
 transform:scale(1.02);
-box-shadow:0 0 15px rgba(0,114,255,0.4);
+box-shadow:0 0 20px rgba(0,114,255,0.6);
 }
 
-/* CARDS STACK */
+/* STACK */
 .stack{
 display:flex;
 flex-direction:column;
 align-items:center;
 }
 
-/* CARDS TECH */
+/* TECH */
 .tech{
 display:flex;
-flex-wrap:wrap;
 justify-content:center;
-gap:15px;
+gap:10px;
 margin-top:20px;
+flex-wrap:wrap;
 }
 
-.tech .card{
-max-width:200px;
-text-align:center;
+.tech-card{
+background:#000;
+padding:15px;
+border-radius:15px;
+width:140px;
+cursor:pointer;
+transition:.3s;
+border:1px solid rgba(255,255,255,0.05);
+}
+.tech-card:hover{
+box-shadow:0 0 15px #00ff88;
+transform:scale(1.05);
 }
 
 /* CONVERSOR */
 .conv-btn{
 max-width:300px;
-margin:auto;
+margin:40px auto;
 cursor:pointer;
+background:#111;
 }
-
 .conv-area{
 display:none;
-margin:30px auto;
+margin:20px auto;
 padding:20px;
 border-radius:20px;
-background:#001a12;
+background:#111;
 max-width:350px;
-box-shadow:0 0 20px #00ff88;
 }
 
 input,select{
@@ -140,14 +144,12 @@ width:100%;
 height:100%;
 pointer-events:none;
 }
-
 .confete{
 position:absolute;
 width:8px;
 height:8px;
 animation:cair linear infinite;
 }
-
 @keyframes cair{
 0%{transform:translateY(-10px)}
 100%{transform:translateY(100vh)}
@@ -161,11 +163,10 @@ footer{padding:30px;text-align:center;opacity:.6}
 
 <div class="confetes"></div>
 
-<!-- INICIO -->
 <div class="section">
 <h1>Início</h1>
 
-<p>Guia completo para se tornar um dos melhores programadores do mundo, aprender novas culturas e viver grandes experiências pelo mundo.</p>
+<p>Guia completo para se tornar um dos melhores progrmadores do mundo, aprender novas culturas e viver grandes experiências pelo mundo</p>
 
 <div class="timeline">
 <div class="points">
@@ -183,7 +184,8 @@ footer{padding:30px;text-align:center;opacity:.6}
 
 <div class="card">
 <h2>Por que ser programador?</h2>
-<p>Programação é transformar ideias em algo real através de testes, errando ou acertando, envolve lógica, criatividade e persistência. É dar vida a algo que antes era só um pensamento.</p></p>
+<p>Programação é transformar ideias em algo real através de testes, errando ou acertando, envolve lógica, criatividade e persistência. É dar vida a algo que antes era só um pensamento.</p>
+</div>
 </div>
 
 <div class="card">
@@ -192,8 +194,8 @@ footer{padding:30px;text-align:center;opacity:.6}
 </div>
 
 <div class="card">
-<h2>Salários pelo mundo 🌍</h2>
-<p>EUA: $120k/ano<br>Canadá: $90k/ano<br>Europa: €50k+/ano</p>
+<h2>Onde a programação domina 🌍</h2>
+<p>EUA 🇺🇸 (Big Tech)<br>Canadá 🇨🇦 (Startups)<br>Europa 🇪🇺 (Tecnologia forte)</p>
 </div>
 
 </div>
@@ -201,41 +203,52 @@ footer{padding:30px;text-align:center;opacity:.6}
 <!-- TECH -->
 <div class="tech">
 
-<div class="card">HTML</div>
-<div class="card">CSS</div>
-<div class="card">JavaScript</div>
-<div class="card">Python</div>
+<div class="tech-card" onclick="mostrar('html')">HTML</div>
+<div class="tech-card" onclick="mostrar('css')">CSS</div>
+<div class="tech-card" onclick="mostrar('js')">JS</div>
+<div class="tech-card" onclick="mostrar('python')">Python</div>
 
 </div>
+
+<div id="info" class="card" style="display:none;"></div>
 
 <!-- CONVERSOR -->
 <div class="card conv-btn" onclick="abrirConv()">Abrir Conversor 💱</div>
 
 <div class="conv-area" id="conv">
 <input id="valor" placeholder="Valor">
-
 <select id="de"></select>
 <select id="para"></select>
-
 <button onclick="converter()">Converter</button>
-
 <div id="res"></div>
 </div>
 
 </div>
 
 <footer>
-Copyright © 2026 Janderf.dev. Todos os direitos reservados.
+Copyright © 2026 Janderf.dev
 </footer>
 
 <script>
 
+/* TECH INFO */
+function mostrar(tipo){
+let box=document.getElementById("info");
+box.style.display="block";
+
+if(tipo==="html") box.innerHTML="<h3>HTML</h3>Estrutura do site.";
+if(tipo==="css") box.innerHTML="<h3>CSS</h3>Estilo e design.";
+if(tipo==="js") box.innerHTML="<h3>JavaScript</h3>Interatividade.";
+if(tipo==="python") box.innerHTML="<h3>Python</h3>Lógica e backend.";
+}
+
+/* CONVERSOR */
 function abrirConv(){
 let c=document.getElementById("conv");
 c.style.display=c.style.display==="block"?"none":"block";
 }
 
-/* moedas */
+/* MOEDAS */
 let moedas=["USD","BRL","EUR","GBP","JPY","CAD","AUD","CHF","CNY","ARS","MXN"];
 let de=document.getElementById("de");
 let para=document.getElementById("para");
@@ -258,7 +271,7 @@ let taxa=data.rates[moedaPara];
 document.getElementById("res").innerText="Resultado: "+(v*taxa).toFixed(2);
 }
 
-/* confete */
+/* CONFETE */
 function ativarConfete(){
 let container=document.querySelector(".confetes");
 
