@@ -1,0 +1,604 @@
+/**
+ * QUARTEL DO PROGRAMADOR — script.js
+ * Sistema de gamificação para estudos de programação.
+ * Persistência via localStorage | Tema militar + futurista
+ */
+
+// ============================================================
+// CONFIGURAÇÕES DO SISTEMA
+// ============================================================
+
+/** Patentes em ordem crescente com XP necessário para atingir */
+const RANKS = [
+  { name: '☆ RECRUTA',   xpRequired: 0   },
+  { name: '✦ CABO',      xpRequired: 100  },
+  { name: '★ SARGENTO',  xpRequired: 250  },
+  { name: '◈ TENENTE',   xpRequired: 500  },
+  { name: '◉ CAPITÃO',   xpRequired: 900  },
+  { name: '⬡ MAJOR',     xpRequired: 1400 },
+  { name: '⬟ CORONEL',   xpRequired: 2000 },
+  { name: '✦★ GENERAL',  xpRequired: 3000 },
+];
+
+/** Missões diárias disponíveis */
+const MISSIONS = [
+  { text: 'Estudar JavaScript por 30 minutos',             icon: '💻', xp: 50 },
+  { text: 'Resolver 3 exercícios de lógica de programação', icon: '🧠', xp: 60 },
+  { text: 'Criar um componente React do zero',              icon: '⚛️',  xp: 70 },
+  { text: 'Estudar CSS Grid e Flexbox por 45 minutos',      icon: '🎨', xp: 55 },
+  { text: 'Ler documentação oficial de uma tecnologia',     icon: '📖', xp: 45 },
+  { text: 'Fazer um mini-projeto em 1 hora',                icon: '🚀', xp: 80 },
+  { text: 'Revisar conceitos de algoritmos e estruturas',   icon: '📊', xp: 65 },
+  { text: 'Assistir uma aula técnica e anotar pontos-chave',icon: '🎓', xp: 55 },
+  { text: 'Contribuir com um projeto open-source',          icon: '🌐', xp: 90 },
+  { text: 'Praticar TypeScript por 30 minutos',             icon: '🔷', xp: 60 },
+  { text: 'Estudar banco de dados (SQL ou NoSQL)',           icon: '🗄️', xp: 65 },
+  { text: 'Debugar e corrigir 3 bugs no seu código',        icon: '🐛', xp: 70 },
+  { text: 'Aprender um padrão de design (Design Pattern)',  icon: '🏗️', xp: 75 },
+  { text: 'Configurar um ambiente de desenvolvimento',      icon: '⚙️', xp: 50 },
+  { text: 'Fazer um desafio no LeetCode ou HackerRank',     icon: '🏆', xp: 80 },
+];
+
+/** Frases motivacionais rotativas */
+const QUOTES = [
+  'Disciplina constrói gigantes.',
+  'Cada linha de código é uma batalha vencida.',
+  'MISSÃO CUMPRIDA 📚💻📊💵🏆',
+  'O código não mente. A prática não engana.',
+  'Um commit por dia afasta o fracasso.',
+  'Bugs são inimigos — encontre-os, elimine-os.',
+  'Programar é resolver problemas que ainda não existem.',
+  'A consistência supera o talento todos os dias.',
+  'Você não é uma variável. Não se limite a um tipo.',
+  'Na guerra do aprendizado, a desistência é a única derrota.',
+  'O General de hoje já foi o Recruta de ontem.',
+  'Cada erro compilado é uma lição aprendida.',
+];
+
+// ============================================================
+// ESTADO DA APLICAÇÃO
+// ============================================================
+
+/** Chave do localStorage */
+const STORAGE_KEY = 'quartel_data_v2';
+
+/** Estado padrão (soldado novo) */
+const DEFAULT_STATE = {
+  username:         '',
+  xp:               0,
+  totalXp:          0,
+  level:            0,
+  dailyMissionDone: false,
+  missionIndex:     0,
+  lastMissionDate:  '',
+  daysStudied:      0,
+  totalMissions:    0,
+  streak:           0,
+  lastStreakDate:   '',
+  hoursStudied:     0,
+  log:              [],
+};
+
+/** Estado atual — carregado do localStorage ou padrão */
+let state = loadState();
+
+// ============================================================
+// SISTEMA DE PROGRESSO / NÍVEIS
+// ============================================================
+
+/**
+ * Calcula o nível atual e XP dentro do nível.
+ * XP por nível: 100, 150, 250, 400, 500, 600, 1000, ∞
+ */
+const XP_PER_LEVEL = [100, 150, 250, 400, 500, 600, 1000];
+
+function getLevel(totalXp) {
+  let lvl = 0;
+  let xpAccum = 0;
+  for (let i = 0; i < XP_PER_LEVEL.length; i++) {
+    if (totalXp >= xpAccum + XP_PER_LEVEL[i]) {
+      xpAccum += XP_PER_LEVEL[i];
+      lvl++;
+    } else {
+      break;
+    }
+  }
+  return { level: Math.min(lvl, 7), xpAccum };
+}
+
+function getXpInLevel(totalXp) {
+  const { level, xpAccum } = getLevel(totalXp);
+  const inLevel = totalXp - xpAccum;
+  const needed  = XP_PER_LEVEL[level] || 999999;
+  return { inLevel, needed, percent: Math.min((inLevel / needed) * 100, 100) };
+}
+
+function getRankByLevel(level) {
+  return RANKS[Math.min(level, RANKS.length - 1)];
+}
+
+// ============================================================
+// PERSISTÊNCIA — localStorage
+// ============================================================
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return { ...DEFAULT_STATE, ...JSON.parse(saved) };
+  } catch (e) { /* silently fail */ }
+  return { ...DEFAULT_STATE };
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) { showToast('⚠ Erro ao salvar progresso.'); }
+}
+
+// ============================================================
+// MISSÃO DIÁRIA
+// ============================================================
+
+function getTodayString() {
+  return new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
+}
+
+/** Seleciona a missão do dia com base na data */
+function getTodayMission() {
+  const today = getTodayString();
+  // Usa a data como seed para sempre ter a mesma missão no mesmo dia
+  const seed  = today.split('-').reduce((a, b) => a + parseInt(b), 0);
+  return MISSIONS[seed % MISSIONS.length];
+}
+
+/** Verifica e reseta a missão se for um novo dia */
+function checkDailyReset() {
+  const today = getTodayString();
+  if (state.lastMissionDate !== today) {
+    state.dailyMissionDone = false;
+    // Verifica sequência: se não estava no dia anterior, quebra
+    if (state.lastMissionDate) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yStr = yesterday.toISOString().split('T')[0];
+      if (state.lastMissionDate !== yStr) {
+        // Quebrou a sequência
+        if (state.streak > 0) {
+          state.streak = 0;
+          saveState();
+        }
+      }
+    }
+    saveState();
+  }
+}
+
+// ============================================================
+// LÓGICA PRINCIPAL — Completar missão
+// ============================================================
+
+function completeMission() {
+  if (state.dailyMissionDone) return;
+
+  const mission  = getTodayMission();
+  const xpGained = mission.xp;
+  const today    = getTodayString();
+  const prevLevel = getLevel(state.totalXp).level;
+
+  // Atualiza XP
+  state.totalXp     += xpGained;
+  state.totalMissions++;
+  state.hoursStudied = Math.round((state.totalMissions * 0.5) * 10) / 10;
+
+  // Dias estudados (conta dias únicos)
+  if (state.lastMissionDate !== today) {
+    state.daysStudied++;
+  }
+
+  // Sequência
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yStr = yesterday.toISOString().split('T')[0];
+
+  if (state.lastMissionDate === yStr || state.lastMissionDate === today) {
+    state.streak++;
+  } else {
+    state.streak = 1;
+  }
+
+  state.lastMissionDate   = today;
+  state.lastStreakDate     = today;
+  state.dailyMissionDone  = true;
+
+  // Nível após XP ganho
+  const newLevel = getLevel(state.totalXp).level;
+
+  // Log da operação
+  const now     = new Date();
+  const timeStr = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  state.log.unshift({
+    time:    timeStr,
+    text:    mission.text.substring(0, 40) + (mission.text.length > 40 ? '…' : ''),
+    xp:      xpGained,
+    date:    today,
+  });
+  if (state.log.length > 30) state.log.pop(); // Mantém no máximo 30 entradas
+
+  saveState();
+
+  // UI — animações
+  updateXpBar(true);
+  updateStats();
+  updateLog();
+  showMissionSuccess();
+  disableMissionButton();
+
+  // Level up?
+  if (newLevel > prevLevel) {
+    triggerLevelUp(newLevel);
+  } else {
+    showToast(`+${xpGained} XP CONQUISTADO! 🔥`);
+  }
+}
+
+// ============================================================
+// ATUALIZAÇÃO DA INTERFACE
+// ============================================================
+
+function updateAll() {
+  updateUserInfo();
+  updateXpBar(false);
+  updateStats();
+  updateLog();
+  updateMissionCard();
+  updateMissionButton();
+  updateRankLadder();
+}
+
+function updateUserInfo() {
+  const { level } = getLevel(state.totalXp);
+  const rank = getRankByLevel(level);
+
+  document.getElementById('display-username').textContent =
+    state.username ? state.username.toUpperCase() : 'RECRUTA ANÔNIMO';
+
+  document.getElementById('display-rank').textContent  = rank.name;
+  document.getElementById('display-level').textContent = String(level + 1).padStart(2, '0');
+
+  // Mostra/esconde campo de nome
+  const setup = document.getElementById('username-setup');
+  setup.style.display = state.username ? 'none' : 'flex';
+}
+
+function updateXpBar(animate) {
+  const { inLevel, needed, percent } = getXpInLevel(state.totalXp);
+
+  const bar     = document.getElementById('xp-bar');
+  const glow    = document.getElementById('xp-bar-glow');
+  const pctEl   = document.getElementById('xp-percent');
+  const currEl  = document.getElementById('xp-current');
+  const nextEl  = document.getElementById('xp-next');
+
+  if (!animate) {
+    bar.style.transition  = 'none';
+    glow.style.transition = 'none';
+    setTimeout(() => {
+      bar.style.transition  = '';
+      glow.style.transition = '';
+    }, 50);
+  }
+
+  const pct = percent.toFixed(1);
+  bar.style.width   = pct + '%';
+  glow.style.width  = pct + '%';
+  pctEl.textContent = pct + '%';
+  currEl.textContent = inLevel + ' XP';
+  nextEl.textContent = needed  + ' XP';
+}
+
+function updateStats() {
+  animateNumber('stat-days',     state.daysStudied);
+  animateNumber('stat-missions', state.totalMissions);
+  animateNumber('stat-streak',   state.streak, '🔥');
+  document.getElementById('stat-hours').textContent = state.hoursStudied + 'h';
+}
+
+function updateRankLadder() {
+  const { level } = getLevel(state.totalXp);
+  document.querySelectorAll('.rank-item').forEach(el => {
+    const r = parseInt(el.dataset.rank);
+    el.classList.toggle('active', r === level);
+  });
+}
+
+function updateMissionCard() {
+  const mission = getTodayMission();
+  document.getElementById('mission-text').textContent    = mission.text;
+  document.getElementById('mission-icon').textContent    = mission.icon;
+  document.getElementById('mission-xp-value').textContent = mission.xp;
+}
+
+function updateMissionButton() {
+  if (state.dailyMissionDone) {
+    disableMissionButton();
+    showMissionSuccess();
+    startCountdown();
+  }
+}
+
+function disableMissionButton() {
+  const btn = document.getElementById('btn-mission');
+  btn.disabled = true;
+  btn.querySelector('.btn-inner').innerHTML =
+    '<span class="btn-icon">✔</span> MISSÃO CONCLUÍDA HOJE';
+
+  const timer = document.getElementById('next-mission-timer');
+  timer.style.display = 'block';
+  startCountdown();
+}
+
+function showMissionSuccess() {
+  const el = document.getElementById('mission-success');
+  el.style.display = 'block';
+  // Rebobina animação
+  el.style.animation = 'none';
+  void el.offsetHeight;
+  el.style.animation = '';
+}
+
+function updateLog() {
+  const container = document.getElementById('log-container');
+  if (!state.log.length) {
+    container.innerHTML = '<p class="log-empty">// Nenhuma operação registrada ainda.</p>';
+    return;
+  }
+  container.innerHTML = state.log.map(entry => `
+    <div class="log-entry">
+      <span class="log-time">${entry.time}</span>
+      ${entry.text}
+      <span class="log-xp">+${entry.xp} XP</span>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// ANIMAÇÃO DE NÚMEROS
+// ============================================================
+
+function animateNumber(id, target, suffix = '') {
+  const el = document.getElementById(id);
+  const current = parseInt(el.textContent) || 0;
+  if (current === target) return;
+
+  const step   = Math.max(1, Math.ceil(Math.abs(target - current) / 20));
+  const dir    = target > current ? 1 : -1;
+  let   val    = current;
+
+  const interval = setInterval(() => {
+    val += step * dir;
+    if ((dir > 0 && val >= target) || (dir < 0 && val <= target)) {
+      val = target;
+      clearInterval(interval);
+    }
+    el.textContent = val + suffix;
+  }, 40);
+}
+
+// ============================================================
+// LEVEL UP
+// ============================================================
+
+function triggerLevelUp(newLevel) {
+  const rank = getRankByLevel(newLevel);
+
+  // Flash na tela
+  const flash = document.createElement('div');
+  flash.className = 'levelup-flash';
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 800);
+
+  // Toast
+  showToast(`🎖 PROMOÇÃO! Você é agora ${rank.name}!`, 4000);
+
+  // Atualiza info do cabeçalho
+  updateUserInfo();
+  updateRankLadder();
+}
+
+// ============================================================
+// CONTAGEM REGRESSIVA PARA PRÓXIMA MISSÃO
+// ============================================================
+
+let countdownInterval = null;
+
+function startCountdown() {
+  if (countdownInterval) clearInterval(countdownInterval);
+
+  function tick() {
+    const now       = new Date();
+    const midnight  = new Date();
+    midnight.setHours(24, 0, 0, 0);
+    const diff      = midnight - now;
+
+    const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+    const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+    const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+
+    const el = document.getElementById('countdown');
+    if (el) el.textContent = `${h}:${m}:${s}`;
+
+    // Se passou da meia-noite, recarrega
+    if (diff <= 0) {
+      clearInterval(countdownInterval);
+      location.reload();
+    }
+  }
+
+  tick();
+  countdownInterval = setInterval(tick, 1000);
+}
+
+// ============================================================
+// RELÓGIO
+// ============================================================
+
+function updateClock() {
+  const now = new Date();
+  const h   = String(now.getHours()).padStart(2, '0');
+  const m   = String(now.getMinutes()).padStart(2, '0');
+  const s   = String(now.getSeconds()).padStart(2, '0');
+  const el  = document.getElementById('clock');
+  if (el) el.textContent = `${h}:${m}:${s}`;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+// ============================================================
+// NOME DO USUÁRIO
+// ============================================================
+
+function setUsername() {
+  const input = document.getElementById('username-input');
+  const name  = input.value.trim();
+  if (!name) {
+    showToast('⚠ Informe um codinome, soldado!');
+    return;
+  }
+  state.username = name;
+  saveState();
+  updateUserInfo();
+  showToast(`✔ Bem-vindo, ${name.toUpperCase()}!`);
+}
+
+// Permite confirmar com Enter
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('username-input');
+  if (input) {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') setUsername();
+    });
+  }
+});
+
+// ============================================================
+// FRASES MOTIVACIONAIS ROTATIVAS
+// ============================================================
+
+let quoteIndex = 0;
+let quoteTimer = null;
+
+function showQuote(index) {
+  quoteIndex = (index + QUOTES.length) % QUOTES.length;
+  const el   = document.getElementById('quote-text');
+
+  el.style.opacity   = '0';
+  el.style.transform = 'translateY(8px)';
+
+  setTimeout(() => {
+    el.textContent       = QUOTES[quoteIndex];
+    el.style.transition  = 'opacity 0.5s, transform 0.5s';
+    el.style.opacity     = '1';
+    el.style.transform   = 'translateY(0)';
+  }, 300);
+
+  // Atualiza dots
+  document.querySelectorAll('.quote-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === quoteIndex);
+  });
+}
+
+function initQuotes() {
+  const dotsEl = document.getElementById('quote-dots');
+  dotsEl.innerHTML = QUOTES.map((_, i) =>
+    `<div class="quote-dot${i === 0 ? ' active' : ''}" onclick="showQuote(${i}); resetQuoteTimer();"></div>`
+  ).join('');
+
+  showQuote(0);
+  resetQuoteTimer();
+}
+
+function resetQuoteTimer() {
+  if (quoteTimer) clearInterval(quoteTimer);
+  quoteTimer = setInterval(() => showQuote(quoteIndex + 1), 5000);
+}
+
+// ============================================================
+// PARTÍCULAS DECORATIVAS
+// ============================================================
+
+function createParticles() {
+  const container = document.getElementById('particles');
+  const count     = 30;
+
+  for (let i = 0; i < count; i++) {
+    const p     = document.createElement('div');
+    p.className = 'particle';
+    p.style.left     = Math.random() * 100 + 'vw';
+    p.style.animationDuration  = (Math.random() * 15 + 8) + 's';
+    p.style.animationDelay     = (Math.random() * 10) + 's';
+    p.style.width  = (Math.random() > 0.7 ? 3 : 2) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
+}
+
+// ============================================================
+// RESET DE PROGRESSO
+// ============================================================
+
+function confirmReset() {
+  document.getElementById('modal-overlay').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('active');
+}
+
+function resetProgress() {
+  localStorage.removeItem(STORAGE_KEY);
+  state = { ...DEFAULT_STATE };
+  closeModal();
+  showToast('♻ Progresso reiniciado. Bem-vindo de volta, Recruta!');
+  setTimeout(() => location.reload(), 1500);
+}
+
+// Fecha modal ao clicar fora
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ============================================================
+// TOAST
+// ============================================================
+
+let toastTimer = null;
+
+function showToast(message, duration = 3000) {
+  const toast       = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, duration);
+}
+
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  checkDailyReset();
+  createParticles();
+  initQuotes();
+  updateAll();
+
+  // Mensagem de boas-vindas
+  if (!state.username) {
+    setTimeout(() => showToast('👋 Informe seu codinome para começar!', 4000), 1000);
+  } else {
+    setTimeout(() => showToast(`▶ BEM-VINDO DE VOLTA, ${state.username.toUpperCase()}!`), 800);
+  }
+});
