@@ -9,14 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-/* --- ESTILO DO PRIMEIRO SITE --- */
+/* --- ESTILO ATUALIZADO --- */
 :root {
-    --primary: #00f2ff;
-    --secondary: #0055ff;
+    --primary: #0044cc;
+    --primary-dark: #002266;
     --dark: #000000;
-    --light: #f0f0f0;
-    --glass: rgba(255, 255, 255, 0.08);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --light: #e0e0e0;
+    --light-dark: #888888;
+    --glass: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.08);
 }
 
 * {
@@ -64,119 +65,123 @@ h1 {
     font-size: clamp(28px, 5vw, 55px);
     margin-bottom: 20px;
     text-align: center;
-    background: linear-gradient(to right, var(--primary), var(--secondary));
+    background: linear-gradient(to right, var(--primary), var(--light-dark));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 1px;
 }
 
 h2 {
-    font-size: clamp(20px, 4vw, 35px);
-    margin-bottom: 15px;
+    font-size: clamp(18px, 3vw, 26px);
+    margin-bottom: 12px;
     color: var(--primary);
     text-align: center;
 }
 
 p {
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 0.95rem;
+    line-height: 1.5;
     text-align: center;
-    max-width: 700px;
-    margin: 0 auto 15px;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
-/* CARDS NOVO ESTILO */
+/* CARDS - MENORES, MESMO TAMANHO */
 .card {
     background: var(--glass);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
-    border-radius: 15px;
-    padding: 25px;
-    margin: 20px auto;
-    max-width: 700px;
+    border-radius: 12px;
+    padding: 18px;
+    margin: 12px auto;
+    width: 100%;
+    max-width: 380px;
     transition: all 0.3s ease;
     text-align: center;
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
     border-color: var(--primary);
-    box-shadow: 0 8px 25px rgba(0, 242, 255, 0.15);
+    box-shadow: 0 6px 20px rgba(0, 68, 204, 0.3);
 }
 
 .card h2 {
-    font-size: clamp(18px, 3vw, 28px);
-    margin-bottom: 12px;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: var(--primary);
 }
 
 .card p {
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 0.85rem;
+    line-height: 1.4;
 }
 
-/* BOTÕES */
+/* BOTÕES - AZUL ESCURO */
 .btn {
     display: inline-block;
-    margin: 10px 8px;
-    padding: 12px 25px;
-    border-radius: 25px;
+    margin: 8px 6px;
+    padding: 10px 20px;
+    border-radius: 20px;
     text-decoration: none;
     color: var(--light);
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary));
     transition: all 0.3s ease;
     font-weight: 500;
+    font-size: 0.85rem;
     border: none;
     cursor: pointer;
 }
 
 .btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+    transform: scale(1.03);
+    box-shadow: 0 0 15px rgba(0, 68, 204, 0.4);
 }
 
 /* CONVERSOR */
 .conv-btn {
-    max-width: 700px;
-    margin: 25px auto;
+    max-width: 380px;
+    margin: 15px auto;
     cursor: pointer;
     background: var(--glass);
     border: 1px solid var(--glass-border);
-    border-radius: 15px;
-    padding: 20px;
+    border-radius: 12px;
+    padding: 15px;
     transition: all 0.3s ease;
     text-align: center;
+    font-size: 0.9rem;
 }
 
 .conv-btn:hover {
     border-color: var(--primary);
-    transform: scale(1.02);
+    transform: scale(1.01);
 }
 
 .conv-area {
     display: none;
-    margin: 20px auto;
-    padding: 25px;
-    border-radius: 15px;
+    margin: 15px auto;
+    padding: 18px;
+    border-radius: 12px;
     background: var(--glass);
     border: 1px solid var(--glass-border);
-    max-width: 350px;
+    max-width: 380px;
 }
 
 input, select {
     width: 100%;
-    padding: 12px 15px;
-    margin-top: 10px;
-    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    border-radius: 8px;
     border: 1px solid var(--glass-border);
     background: rgba(0, 0, 0, 0.5);
     color: var(--light);
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-family: 'Poppins', sans-serif;
 }
 
 input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.4);
 }
 
 input:focus, select:focus {
@@ -190,14 +195,14 @@ select {
 
 .conv-area button {
     width: 100%;
-    margin-top: 12px;
-    padding: 12px;
+    margin-top: 10px;
+    padding: 10px;
     border: none;
-    border-radius: 10px;
-    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    border-radius: 8px;
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary));
     color: var(--light);
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
@@ -205,21 +210,21 @@ select {
 
 .conv-area button:hover {
     transform: scale(1.02);
-    box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+    box-shadow: 0 0 12px rgba(0, 68, 204, 0.4);
 }
 
 #res {
-    margin-top: 15px;
-    font-size: 1.2rem;
+    margin-top: 12px;
+    font-size: 1rem;
     color: var(--primary);
     font-weight: 500;
 }
 
 footer {
-    padding: 40px 20px;
+    padding: 30px 20px;
     text-align: center;
-    opacity: 0.6;
-    font-size: 0.9rem;
+    opacity: 0.5;
+    font-size: 0.8rem;
 }
 
 /* RESPONSIVIDADE CELULAR */
@@ -230,42 +235,45 @@ footer {
     }
 
     .card {
-        padding: 18px 15px;
-        margin: 15px auto;
-        border-radius: 12px;
+        padding: 15px 12px;
+        margin: 10px auto;
+        max-width: 100%;
+        border-radius: 10px;
+    }
+
+    .card:hover {
+        transform: none;
     }
 
     .card h2 {
-        font-size: 1.1rem;
-        margin-bottom: 10px;
+        font-size: 0.95rem;
     }
 
     .card p {
+        font-size: 0.8rem;
+    }
+
+    p {
         font-size: 0.9rem;
         text-align: left;
     }
 
-    p {
-        font-size: 1rem;
-        text-align: left;
-    }
-
     h1 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
 
     h2 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .btn {
         display: block;
-        margin: 10px auto;
+        margin: 8px auto;
         width: max-content;
     }
 
     .conv-btn {
-        padding: 15px;
+        padding: 12px;
     }
 
     .conv-area {
