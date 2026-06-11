@@ -11,13 +11,12 @@
 <style>
 /* --- ESTILO ATUALIZADO --- */
 :root {
-    --primary: #0044cc;
-    --primary-dark: #002266;
+    --primary: #0066ff;      /* Azul escuro brilhante */
+    --secondary: #002266;    /* Preto quase cinza azulado */
     --dark: #000000;
-    --light: #e0e0e0;
-    --light-dark: #888888;
+    --light: #e8e8e8;
     --glass: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(0, 102, 255, 0.3);
 }
 
 * {
@@ -65,123 +64,133 @@ h1 {
     font-size: clamp(28px, 5vw, 55px);
     margin-bottom: 20px;
     text-align: center;
-    background: linear-gradient(to right, var(--primary), var(--light-dark));
+    background: linear-gradient(to right, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 1px;
 }
 
 h2 {
-    font-size: clamp(18px, 3vw, 26px);
-    margin-bottom: 12px;
+    font-size: clamp(20px, 4vw, 35px);
+    margin-bottom: 15px;
     color: var(--primary);
     text-align: center;
+    font-weight: 600;
 }
 
 p {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 1.1rem;
+    line-height: 1.6;
     text-align: center;
-    max-width: 100%;
-    margin: 0 auto;
+    max-width: 700px;
+    margin: 0 auto 15px;
 }
 
-/* CARDS - MENORES, MESMO TAMANHO */
+/* CARDS - TODOS DO MESMO TAMANHO GRANDE */
 .card {
     background: var(--glass);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 18px;
-    margin: 12px auto;
+    border-radius: 15px;
+    padding: 30px 25px;
+    margin: 20px auto;
+    max-width: 700px;
     width: 100%;
-    max-width: 380px;
+    min-height: 180px;
     transition: all 0.3s ease;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-5px);
     border-color: var(--primary);
-    box-shadow: 0 6px 20px rgba(0, 68, 204, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 102, 255, 0.25);
 }
 
 .card h2 {
-    font-size: 1rem;
-    margin-bottom: 8px;
-    color: var(--primary);
+    font-size: clamp(18px, 3vw, 26px);
+    margin-bottom: 12px;
 }
 
 .card p {
-    font-size: 0.85rem;
-    line-height: 1.4;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 /* BOTÕES - AZUL ESCURO */
 .btn {
     display: inline-block;
-    margin: 8px 6px;
-    padding: 10px 20px;
-    border-radius: 20px;
+    margin: 10px 8px;
+    padding: 14px 28px;
+    border-radius: 25px;
     text-decoration: none;
-    color: var(--light);
-    background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+    color: #fff;
+    background: linear-gradient(45deg, #0055ee, #003399);
     transition: all 0.3s ease;
-    font-weight: 500;
-    font-size: 0.85rem;
+    font-weight: 600;
     border: none;
     cursor: pointer;
+    font-size: 1rem;
 }
 
 .btn:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 15px rgba(0, 68, 204, 0.4);
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0, 85, 238, 0.5);
+    background: linear-gradient(45deg, #0066ff, #0044bb);
 }
 
 /* CONVERSOR */
 .conv-btn {
-    max-width: 380px;
-    margin: 15px auto;
+    max-width: 700px;
+    margin: 25px auto;
     cursor: pointer;
     background: var(--glass);
     border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 15px;
+    border-radius: 15px;
+    padding: 20px;
     transition: all 0.3s ease;
     text-align: center;
-    font-size: 0.9rem;
+    min-height: 180px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .conv-btn:hover {
     border-color: var(--primary);
-    transform: scale(1.01);
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(0, 102, 255, 0.25);
 }
 
 .conv-area {
     display: none;
-    margin: 15px auto;
-    padding: 18px;
-    border-radius: 12px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 15px;
     background: var(--glass);
     border: 1px solid var(--glass-border);
-    max-width: 380px;
+    max-width: 350px;
 }
 
 input, select {
     width: 100%;
-    padding: 10px 12px;
-    margin-top: 8px;
-    border-radius: 8px;
+    padding: 12px 15px;
+    margin-top: 10px;
+    border-radius: 10px;
     border: 1px solid var(--glass-border);
     background: rgba(0, 0, 0, 0.5);
     color: var(--light);
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-family: 'Poppins', sans-serif;
 }
 
 input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 input:focus, select:focus {
@@ -195,36 +204,36 @@ select {
 
 .conv-area button {
     width: 100%;
-    margin-top: 10px;
-    padding: 10px;
+    margin-top: 12px;
+    padding: 14px;
     border: none;
-    border-radius: 8px;
-    background: linear-gradient(45deg, var(--primary-dark), var(--primary));
-    color: var(--light);
+    border-radius: 10px;
+    background: linear-gradient(45deg, #0055ee, #003399);
+    color: #fff;
     cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
     font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
 }
 
 .conv-area button:hover {
     transform: scale(1.02);
-    box-shadow: 0 0 12px rgba(0, 68, 204, 0.4);
+    box-shadow: 0 0 20px rgba(0, 85, 238, 0.5);
 }
 
 #res {
-    margin-top: 12px;
-    font-size: 1rem;
+    margin-top: 15px;
+    font-size: 1.2rem;
     color: var(--primary);
     font-weight: 500;
 }
 
 footer {
-    padding: 30px 20px;
+    padding: 40px 20px;
     text-align: center;
-    opacity: 0.5;
-    font-size: 0.8rem;
+    opacity: 0.6;
+    font-size: 0.9rem;
 }
 
 /* RESPONSIVIDADE CELULAR */
@@ -235,45 +244,45 @@ footer {
     }
 
     .card {
-        padding: 15px 12px;
-        margin: 10px auto;
-        max-width: 100%;
-        border-radius: 10px;
-    }
-
-    .card:hover {
-        transform: none;
+        padding: 20px 15px;
+        margin: 15px auto;
+        border-radius: 12px;
+        min-height: 160px;
     }
 
     .card h2 {
-        font-size: 0.95rem;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
     }
 
     .card p {
-        font-size: 0.8rem;
-    }
-
-    p {
         font-size: 0.9rem;
         text-align: left;
     }
 
+    p {
+        font-size: 1rem;
+        text-align: left;
+    }
+
     h1 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
 
     h2 {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
 
     .btn {
         display: block;
-        margin: 8px auto;
+        margin: 10px auto;
         width: max-content;
+        padding: 12px 24px;
     }
 
     .conv-btn {
-        padding: 12px;
+        padding: 15px;
+        min-height: 140px;
     }
 
     .conv-area {
@@ -293,7 +302,7 @@ footer {
 
 <p>Guia completo para se tornar um dos melhores programadores do mundo, aprender novas culturas e viver grandes experiências pelo mundo</p>
 
-<!-- CARDS -->
+<!-- CARDS - TODOS DO MESMO TAMANHO GRANDE -->
 
 <div class="card">
 <h2>Por que ser programador?</h2>
